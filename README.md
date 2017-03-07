@@ -45,7 +45,7 @@ To start the final application, just run the following fabric command:
 
     $ fab devserver
 
-This will tell Tornado to start the applicaton with the default port 8888. If
+This will tell Tornado to start the application with the default port 8888. If
 you want to use another port, just type:
 
     $ fab devserver:port=8000
