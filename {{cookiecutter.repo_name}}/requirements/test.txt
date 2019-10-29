@@ -1,0 +1,9 @@
+coverage
+flake8
+pydocstyle
+pylint
+pytest-pep8
+pytest-cov
+# for pytest-runner to work it is important that pytest comes last in
+# this list: https://github.com/pytest-dev/pytest-runner/issues/11
+pytest
