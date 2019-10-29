@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import with_statement
+
 import os
 import sys
+
+from fabric import task
+
 sys.path.insert(0, os.getcwd())
-
-from fabric import colors
-from fabric.api import *
-from fabric.contrib.console import confirm
-
 
 CMD_PYLINT = 'pylint'
 
@@ -24,9 +23,14 @@ def clean():
 
 
 @task
-def devserver(port=8888, logging='error'):
+def devserve(port=8888, logging='debug', debug=True):
     """Start the server in development mode."""
-    run('python run.py --port=%s --logging=%s' % (port, logging))
+    os.system(f'python run.py --port={port} --logging={logging}, debug={debug}')
+
+
+@task
+def serve(port=8888, logging='warn', debug=False):
+    os.system(f'python run.py --port={port} --logging={logging}, debug={debug}')
 
 
 @task

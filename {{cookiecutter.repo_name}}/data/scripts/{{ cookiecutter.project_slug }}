@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# /etc/init.d/{{ cookiecutter.project_slug }}
+# init script for {{ cookiecutter.project_slug|title }}
+#
+# chkconfig: 345 93 63
+# description: {{ cookiecutter.project_slug|title }} Initializing Script
+#
+### BEGIN INIT INFO
+# Provides:          {{ cookiecutter.project_slug }}
+# Required-Start:    $local_fs $rem ote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the {{ cookiecutter.project_slug }} service
+# Description:       starts {{ cookiecutter.project_slug }}
+### END INIT INFO
+
+NAME={{ cookiecutter.project_slug }}
+USER={{ cookiecutter.project_slug }}
+DESC="eVision-{{ cookiecutter.project_slug|title }} - {{ cookiecutter.description }}"
+{{ cookiecutter.project_slug|upper }}_DIR=""
+PYTHON_FILE="{% raw %}${{% endraw %}{{ cookiecutter.project_slug|upper }}_DIR}/run.py" # modify this on demand
+
+do_start() {
+    echo "Starting {{ cookiecutter.project_slug|title }} Service..."
+    if [ ${USER} == "root" ]; then
+      sh "{% raw %}${{% endraw %}{{ cookiecutter.project_slug|upper }}_DIR}/start.sh"
+    else
+      su - ${USER} -c "sh \"{% raw %}${{% endraw %}{{ cookiecutter.project_slug|upper }}_DIR}/start.sh\""
+    fi
+
+    RETVAL=`echo $?`
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$NAME
+}
+
+do_stop() {
+    echo "Stopping {{ cookiecutter.project_slug|title }} Service..."
+    if [ ${USER} == "root" ]; then
+      sh "{% raw %}${{% endraw %}{{ cookiecutter.project_slug|upper }}_DIR}/stop.sh"
+    else
+      su - ${USER} -c "sh \"{% raw %}${{% endraw %}{{ cookiecutter.project_slug|upper }}_DIR}/stop.sh\""
+    fi
+    RETVAL=`echo $?`
+    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$NAME
+}
+
+do_status() {
+      if [ -e "/var/lock/subsys/$NAME" ]; then
+        echo $NAME is running
+      else
+        echo $NAME is NOT running
+        exit 1
+      fi
+}
+
+case "$1" in
+    start)
+       do_start
+       ;;
+    stop)
+       do_stop
+       ;;
+    restart)
+       do_stop
+       do_start
+       ;;
+    status)
+       do_status
+       ;;
+    *)
+       echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0
