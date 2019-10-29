@@ -9,13 +9,12 @@ from os import path as osp
 import tornado.template
 from tornado.options import define, options
 
-from evision.lib.config import ConfigSection
+from evision.lib.config import ConfigSection, EvisionConfig
 from evision.lib.constant import DeploymentType, Keys
 from evision.lib.log import logconfig, logutil
 from evision.lib.util import PathUtil
 
 from {{cookiecutter.project_slug}}.util import paths
-from {{cookiecutter.project_slug}}.util.config import {{ cookiecutter.project_slug|title }}Config
 
 logger = logutil.get_logger()
 
@@ -38,7 +37,7 @@ options.parse_command_line()
 
 # ##################################################################
 # Deployment Configuration
-CONFIG = {{ cookiecutter.project_slug|title }}Config()
+CONFIG = EvisionConfig(paths.config_path('default.ini'))
 if options.profile:
     _PROFILE = options.profile.lower()
 elif 'DEPLOYMENT_TYPE' in os.environ:
@@ -46,7 +45,7 @@ elif 'DEPLOYMENT_TYPE' in os.environ:
 else:
     _PROFILE = DeploymentType.PROD
 # 读取部署profile相关的配置
-CONFIG.load_last_or_by_profile(_PROFILE)
+CONFIG.load_config(paths.config_path(f'{_PROFILE}.ini'))
 # extra config
 if options.config and osp.exists(options.config):
     CONFIG.load(options.config)
@@ -75,7 +74,8 @@ logger.info('Extra settings: ' + ''.join(
 # logger config
 LOG_LEVEL = logging.DEBUG if __debug_mode else options.logging
 log_dir = paths.log_path(CONFIG.get(ConfigSection.PROJECT, 'log_dir'))
-logconfig.config(options.port, {}, log_level=LOG_LEVEL, show_console=_PROFILE == DeploymentType.DEV)
+logconfig.config(options.port, {}, log_level=LOG_LEVEL, log_dir=log_dir,
+                 show_console=_PROFILE == DeploymentType.DEV)
 
 __all__ = [
     'APP_SETTINGS',
