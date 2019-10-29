@@ -36,8 +36,5 @@ def set_cookie_secret(project_directory):
 if '{{ cookiecutter.use_docker }}'.lower() == 'n':
     os.remove(os.path.join(PROJECT_DIRECTORY, 'Dockerfile'))
 
-if '{{ cookiecutter.use_vagrant }}'.lower() == 'n':
-    os.remove(os.path.join(PROJECT_DIRECTORY, 'Vagrantfile'))
-
 # Replace the cookie secret
 set_cookie_secret(PROJECT_DIRECTORY)
