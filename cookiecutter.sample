@@ -1,0 +1,17 @@
+{
+  "cookiecutter": {
+    "project_name": "eVision Awesome Webservice",
+    "project_slug": "argus",
+    "author_name": "dectinc",
+    "email": "dev@evision.ai",
+    "repo_name": "evision-awesome-webservice",
+    "repo_hosting": "github.com",
+    "repo_hosting_domain": "github.com",
+    "repo_username": "evision-ai",
+    "description": "A short description of the project.",
+    "version": "0.1.0",
+    "use_docker": "y",
+    "open_source_license": "GPLv3",
+    "_template": "."
+  }
+}
