@@ -22,14 +22,14 @@ class SamplePageHandler(tornado.web.RequestHandler):
 
 class SampleSynchronousFetchHandler(BaseHandler):
     def _get(self, *args, **kwargs):
-        url = self.get_argument('url')
+        url = self.get_argument('url', default='evision.ai')
         response = requests.get(f'http://{url}')
         self.finish_response(result=response.text)
 
 
 class SampleAsynchronousFetchHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
-        url = self.get_argument('url')
+        url = self.get_argument('url', default='evision.ai')
         http_client = AsyncHTTPClient()
         response = await http_client.fetch(request=f'http://{url}')
         self.write(f'page content={response.body}')
