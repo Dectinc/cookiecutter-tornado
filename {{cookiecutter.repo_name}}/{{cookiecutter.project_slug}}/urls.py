@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from handlers import base
+from {{ cookiecutter.project_slug }}.handlers import sample
 
 
 url_patterns = [
-    (r"/", base.MainHandler),
+    (r"/sample/page", sample.SamplePageHandler),
+    (r"/sample/fetch/sync", sample.SampleSynchronousFetchHandler),
+    (r"/sample/fetch/async", sample.SampleAsynchronousFetchHandler)
 ]
